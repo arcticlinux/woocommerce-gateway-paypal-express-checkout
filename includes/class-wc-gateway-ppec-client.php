@@ -458,6 +458,7 @@ class WC_Gateway_PPEC_Client {
 	 */
 	protected function _get_details_from_cart() {
 		$settings = wc_gateway_ppec()->settings;
+		$old_wc = version_compare( WC_VERSION, '3.0', '<' );
 
 		$decimals      = $settings->get_number_of_decimal_digits();
 		$rounded_total = $this->_get_rounded_total_in_cart();
@@ -468,6 +469,7 @@ class WC_Gateway_PPEC_Client {
 			'order_tax'         => round( WC()->cart->tax_total + WC()->cart->shipping_tax_total, $decimals ),
 			'shipping'          => round( WC()->cart->shipping_total, $decimals ),
 			'items'             => $this->_get_paypal_line_items_from_cart(),
+			'email'             => $old_wc ? '' : WC()->customer->get_billing_email(),
 		);
 
 		return $this->get_details( $details, $discounts, $rounded_total, WC()->cart->total );
