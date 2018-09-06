@@ -309,6 +309,10 @@ class WC_Gateway_PPEC_Client {
 			)
 		);
 
+		if ( ! empty( $details['email'] ) ) {
+			$params['EMAIL'] = $details['email'];
+		}
+
 		if ( $args['create_billing_agreement'] ) {
 			$params['L_BILLINGTYPE0']                 = 'MerchantInitiatedBillingSingleAgreement';
 			$params['L_BILLINGAGREEMENTDESCRIPTION0'] = $this->_get_billing_agreement_description();
@@ -698,6 +702,8 @@ class WC_Gateway_PPEC_Client {
 		}
 
 		$details['shipping_address'] = $shipping_address;
+
+		$details['email'] = $old_wc ? $order->billing_email : $order->get_billing_email();
 
 		return $details;
 	}
